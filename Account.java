@@ -60,4 +60,26 @@ public class Account {
             balance += amount ;
         }
     }
+
+    // Implment a withdraw method
+    public void withdraw(double amount) {
+        if (amount >= 0  || amount < balance) {
+            balance -= amount;
+        }
+    }
+
+    // Implement a getter for number, name, and balance
+    public int getNumber() {
+        return number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    // Implement setter for balance
 }
