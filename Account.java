@@ -34,3 +34,13 @@
  * incorrect input; they simply ignore it. It is up to the program that calls
  * these functions to provide the error messages for the user of the program.
  */
+
+// Create a class called Account
+public class Account {
+    // Declare protected data fields for account's number, name, and balance
+    protected int number;
+    protected String name;
+    protected double balance;
+
+
+}
