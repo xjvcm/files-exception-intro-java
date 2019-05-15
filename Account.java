@@ -15,7 +15,7 @@
  *      The constructor
  * public String toString()
  *      Returns a string giving the account ID, name, and balance, separated by
- *      colons. Do not use format()on the balance; you want to keep the number 
+ *      colons. Do not use format() on the balance; you want to keep the number 
  *      as accurate as possible.
  * public void deposit(double amount)
  *      Adds the given amount to the current balance. If the amount is negative,
@@ -42,5 +42,15 @@ public class Account {
     protected String name;
     protected double balance;
 
+    // Implement 3-argument constructor
+    Account(int number, String name, double balance) {
+        this.number = number;
+        this.name = name;
+        this.balance = balance;
+    }
 
+    // Implemenet a method that returns a string of the number, name and balance
+    public String toString() {
+        return number + ":" + name + ":" + balance;
+    }
 }
