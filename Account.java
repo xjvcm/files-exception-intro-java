@@ -82,4 +82,7 @@ public class Account {
     }
 
     // Implement setter for balance
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }
