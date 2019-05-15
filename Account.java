@@ -53,4 +53,11 @@ public class Account {
     public String toString() {
         return number + ":" + name + ":" + balance;
     }
+
+    // Implement a deposit method
+    public void deposit(double amount) {
+        if (amount >= 0) {
+            balance += amount ;
+        }
+    }
 }
