@@ -77,10 +77,10 @@ public class Customer extends Account {
 		 * When the program finishes, print a message saying that the ATM program has concluded.
 		 */
 		
-		// Create input file object
+		// Create input file object from the local file
 		File file = new File("accounts.dat");
 
-		// Instantiate/declare scanner object;
+		// Instantiate/declare scanner object to stay in main method scope
 		Scanner input = null;
 
 		// Handle account.dat missing exception
@@ -93,8 +93,9 @@ public class Customer extends Account {
 		}
 		
 		
-        // Invoke useDelimiter to change the expected pattern
-		input.useDelimiter(":|\n");
+		// Invoke useDelimiter to change the expected pattern
+		// Seperators are colon(:), new line, and return characters
+		input.useDelimiter(":|\n|\r");
 
 		// Read text file
 		int number = input.nextInt();
@@ -103,13 +104,7 @@ public class Customer extends Account {
 		String name = input.next();
 		System.out.println(name);
 
-		double balance = 0.0;
-		try {
-			balance = Double.parseDouble(input.next());
-		}
-		catch (InputMismatchException ex) {
-			System.out.println(ex.toString());
-		}
+		double balance = input.nextDouble();
 		System.out.println(balance);
     }   
 }
