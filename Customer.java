@@ -46,14 +46,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Locale;
 
-public class Customer extends Account {
+public class Customer {
 
-    Customer(int number, String name, double balance) {
-        super(number, name, balance);
-    }
+	// Customer arg constructor
+    // Customer(int number, String name, double balance) {
+    //     super(number, name, balance);
+	// }
+	
     public static void main(String[] args) {
         /*
 		 * Open the input file accounts.dat.
@@ -83,6 +85,10 @@ public class Customer extends Account {
 		// Instantiate/declare scanner object to stay in main method scope
 		Scanner input = null;
 
+		// Instantiate/declare ArrayList object
+		ArrayList<Account> accountList = 
+			new ArrayList<Account>();
+
 		// Handle account.dat missing exception
 		try {
 			input = new Scanner(file);
@@ -97,14 +103,34 @@ public class Customer extends Account {
 		// Seperators may be colon(:), new line, and/or return characters
 		input.useDelimiter(":|\n|\r");
 
-		// Read text file
-		int number = input.nextInt();
-		System.out.println(number);
+		// // Read text file
+		// int number = input.nextInt();
+		// System.out.println(number);
 
-		String name = input.next();
-		System.out.println(name);
+		// String name = input.next();
+		// System.out.println(name);
 
-		double balance = input.nextDouble();
-		System.out.println(balance);
+		// double balance = input.nextDouble();
+		// System.out.println(balance);
+
+		// try {
+			while (input.hasNext()) {
+				// Move curor to next line
+				if (input.hasNextLine()) {
+					input.nextLine();
+				}
+
+				int number = input.nextInt();
+				String name = input.next();
+				double balance = input.nextDouble();
+
+				accountList.add(new Account(number, name, balance));
+				
+				System.out.println(number + ":" + name + ":" + balance);
+			}
+		// }
+		// catch (InputMismatchException ex) {
+		// 	System.out.println(ex.toString());
+		// }
     }   
 }
