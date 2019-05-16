@@ -48,6 +48,26 @@
 */
 public class Customer {
     public static void main(String[] args) {
-        
+        /*
+		 * Open the input file accounts.dat.
+		 * Create a new Scanner based on this file. If this fails due to a FileNotFoundException,
+		 * the program prints an error message and ends.
+		 * Read the accounts from the file to create accountList, an ArrayList<Account>
+		 * If the size of the list is greater than zero:
+		 	* Create a Scanner based on System.in
+		 	* Repeatedly do the following:
+		 		* Ask for an account number and read a line of input.
+		 		* If the user just presses ENTER, the program has finished.
+		 		* Otherwise, use getAccountIndex() to find the index of the account with
+		 		* the corresponding number.
+		 		* If the index is not -1, then:
+		 			* Set a variable named account to the account at the given index
+		 			* Print a "Hello” message that greets the account owner by name.
+		 			* Show the current account balance.
+		 			* Call doTransactions()
+		 			* Call writeAccounts() to write the updated account list to disk
+		 			* Print a personalized "Goodbye" message for the account owner
+		 * When the program finishes, print a message saying that the ATM program has concluded.
+		 */
     }   
 }
