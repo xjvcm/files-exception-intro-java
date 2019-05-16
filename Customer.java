@@ -44,7 +44,16 @@
  */
 
 import java.io.File;
-public class Customer {
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.Locale;
+
+public class Customer extends Account {
+
+    Customer(int number, String name, double balance) {
+        super(number, name, balance);
+    }
     public static void main(String[] args) {
         /*
 		 * Open the input file accounts.dat.
@@ -67,7 +76,40 @@ public class Customer {
 		 			* Print a personalized "Goodbye" message for the account owner
 		 * When the program finishes, print a message saying that the ATM program has concluded.
 		 */
-        
-        File file = new file("account.dat");
+		
+		// Create input file object
+		File file = new File("accounts.dat");
+
+		// Instantiate/declare scanner object;
+		Scanner input = null;
+
+		// Handle account.dat missing exception
+		try {
+			input = new Scanner(file);
+		}
+		catch (FileNotFoundException ex) {
+			System.out.println("\"accounts.dat\" does not exist");
+			System.exit(0);
+		}
+		
+		
+        // Invoke useDelimiter to change the expected pattern
+		input.useDelimiter(":|\n");
+
+		// Read text file
+		int number = input.nextInt();
+		System.out.println(number);
+
+		String name = input.next();
+		System.out.println(name);
+
+		double balance = 0.0;
+		try {
+			balance = Double.parseDouble(input.next());
+		}
+		catch (InputMismatchException ex) {
+			System.out.println(ex.toString());
+		}
+		System.out.println(balance);
     }   
 }
