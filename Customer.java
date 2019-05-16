@@ -94,7 +94,7 @@ public class Customer extends Account {
 		
 		
 		// Invoke useDelimiter to change the expected pattern
-		// Seperators are colon(:), new line, and return characters
+		// Seperators may be colon(:), new line, and/or return characters
 		input.useDelimiter(":|\n|\r");
 
 		// Read text file
