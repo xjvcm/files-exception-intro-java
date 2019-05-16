@@ -43,9 +43,7 @@
  *          with two digits after the decimal point.
  */
 
-/**
- * Customer
-*/
+import java.io.File;
 public class Customer {
     public static void main(String[] args) {
         /*
@@ -69,5 +67,7 @@ public class Customer {
 		 			* Print a personalized "Goodbye" message for the account owner
 		 * When the program finishes, print a message saying that the ATM program has concluded.
 		 */
+        
+        File file = new file("account.dat");
     }   
 }
