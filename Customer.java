@@ -42,3 +42,12 @@
  * This program must print all monetary amounts preceded by a dollar sign and 
  *          with two digits after the decimal point.
  */
+
+/**
+ * Customer
+*/
+public class Customer {
+    public static void main(String[] args) {
+        
+    }   
+}
