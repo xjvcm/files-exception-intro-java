@@ -49,10 +49,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 // import java.util.InputMismatchException;
 public class Customer {
-	/*
-	 * A utility method that shows the current balance. I'm giving you this one
-	 * for free.
-	 */
+	/* A utility method that shows the current balance. I'm giving you this one
+	for free. */
 	public static void showBalance(Account account) {
 		System.out.printf("Your current balance is $%.2f\n", account.getBalance());
   }
@@ -84,7 +82,6 @@ public class Customer {
       System.out.println(amountString + " is not a valid number.");
     }
 	}
-	
 	/*
 	 * Given an Account object (acct) and a string that should contain a number,
 	 * this method makes sure the string does contain a number and
@@ -115,7 +112,6 @@ public class Customer {
       System.out.println(amountString + " is not a valid number.");
     }
 	}
-	
 	/*
 	 * Given a Scanner that refers to an open account data file, this method
 	 * reads the file, and, for each line, splits the fields and creates a new
@@ -205,16 +201,17 @@ public class Customer {
 	 * error message and returns -1.
 	 */
   public static int getAccountIndex(ArrayList<Account> accountList, 
-      String amountString) {
+      String accountString) {
     // Validate string contains only whole numbers
-    if (amountString.matches("[0-9]+")) {
-      int accountNumber = Integer.parseInt(amountString);
+    if (accountString.matches("[0-9]+")) {
+      // convert string to integer
+      int accountNumber = Integer.parseInt(accountString);
+      // invoke findIndex()
       return findIndex(accountList, accountNumber);
     } else {
       return -1;
     }
 	}
-
 	/*
 	 * This method takes acct (an Account object) and a Scanner that scans
 	 * keyboard input.
@@ -227,19 +224,22 @@ public class Customer {
 	 * 
 	 * If the input is not W, D, or F, the method prints an appropriate error message.
 	 */
-	public static void doTransactions(Account account, Scanner input) {
-    // Create empt
+	public static void doTransactions(Account account, Scanner keyInput) {
+    // Create empty string for amount
     String amountString = "";
+    // Create empty char for user selection
     char letter;
+    // boolean loop continuation
     boolean loop = true;
+    // while loop to repeatedly ask th user until they they finish.
     while (loop) {
       System.out.print("D)eposit, W)ithdraw, or F)inish? ");
-      letter = input.next().charAt(0);
+      letter = keyInput.next().charAt(0);
       switch (letter) {
         case 'd':
         case 'D':
           System.out.print("Enter amount to deposit: $");
-          amountString = input.next();
+          amountString = keyInput.next();
           doDeposit(account, amountString);
           break;
         case 'w':
@@ -299,10 +299,34 @@ public class Customer {
     ArrayList<Account> accountList = readAccounts(fileInput);
 		// If the size of the list is greater than zero:    
 		if (accountList.size() > 0) {
-			Scanner input = new Scanner(System.in);
-			System.out.print("Enter your account number: ");
-			input.nextInt();
-      input.close();
+      // create scanner keyboard input object
+      Scanner keyInput = new Scanner(System.in);
+      // while input does not equal ENTER
+      while (keyInput.next() == "\n") {
+        // prompt user to enter account number
+        System.out.print("Enter your account number: ");
+        // save input as a string
+        String accountString = keyInput.next();
+        // pass input and string to get index
+        int index = getAccountIndex(accountList, accountString);
+        // invoke transations when index is not -1
+        if (index == -1) {
+          // assign account object at index to a account variable
+          Account account = accountList.get(index);
+          // greet user
+          System.out.println("Hello " + account.getName() + "!");
+          // Show current balance
+          System.out.println("Your current balance is $" 
+              + account.getBalance());
+          // Invoke doTransaction
+          doTransactions(account, keyInput);
+          // Invoke writeAccounts
+          writeAccounts(accountList);
+          break;
+        }
+      }
+      keyInput.close();
     }
+
   }
 }
