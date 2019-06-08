@@ -63,10 +63,10 @@ public class Customer {
 	 * prints an appropriate error message and leaves the acct variable unchanged.
 	 */
 	public static void doDeposit(Account account, String amountString) {
-    // Convert String to int
-    int amount = Integer.parseInt(amountString);
     // Handle invalid numbers
     try {
+      // Convert String to int
+      double amount = Double.parseDouble(amountString);
       // Validate string if it only has whole number
       if ((amountString.matches("[0-9]+")) && (amount >= 0)) {
         // deposit amount to account
@@ -92,20 +92,22 @@ public class Customer {
 	 * message and leaves the acct variable unchanged.
 	 */
 	public static void doWithdrawal(Account account, String amountString) {
-		// Convert String to int
-    int amount = Integer.parseInt(amountString);
     // Handle invalid numbers
     try {
+      // Convert String to double
+      double amount = Double.parseDouble(amountString);
       // Validate string if it only has whole number
-      if ((amountString.matches("[0-9]+")) && (amount >= 0) 
-          && amount <= account.getBalance()) {
+      if ((amountString.matches("\\d.+") && (amount >= 0.0) 
+          && (amount <= account.getBalance()))) {
         // deposit amount to account
         account.withdraw(amount);
         // invoke showBalance() to display updated balance
         showBalance(account);
-      } else {
+      } else if (amount > account.getBalance()) {
+        System.out.println("You cannot withdraw more than you have.");
+      } else if (amount < 0) {
         // Print error message for negative numbers
-        System.out.println("You cannot deposit a negative amount.");
+        System.out.println("You cannot withdraw a negative amount.");
       }
     } catch (NumberFormatException ex) {
       // Print message for handling invalid number exception
@@ -130,10 +132,6 @@ public class Customer {
     fileInput.useDelimiter(":|\n|\r");
 		// Read file and create an Array list of Accounts
 		while (fileInput.hasNext()) {
-			// Move cursor to next line
-			if (fileInput.hasNextLine()) {
-				fileInput.nextLine();
-      }
       try {
         // save data into private data field variables
         int number = fileInput.nextInt();
@@ -148,6 +146,10 @@ public class Customer {
         accountList.clear();
         // Return empty list
         return accountList;
+      }
+      // Move cursor to next line
+      if (fileInput.hasNextLine()) {
+        fileInput.nextLine();
       }
     }
 		return accountList;
@@ -166,9 +168,10 @@ public class Customer {
     } catch (FileNotFoundException ex) {
       System.out.println("File does not exist");
     }
-    for (Account account: accountList) {
-      output.print(account.toString() + "\n");
+    for (int i = 0; i < accountList.size() - 1; i++) {
+      output.println(accountList.get(i).toString());
     }
+    output.print(accountList.get(accountList.size() - 1).toString());
     output.close();
 	}
 	/*
@@ -184,8 +187,8 @@ public class Customer {
       /* If the account's number at index "i" equals to the inputted account
       number then return the index */
       if (accountList.get(i).getNumber() == accountNumber) {
-        // return index "i"
-        return i;
+      // return index "i"
+      return i;
       }
     }
     // return -1 if no match
@@ -202,15 +205,20 @@ public class Customer {
 	 */
   public static int getAccountIndex(ArrayList<Account> accountList, 
       String accountString) {
-    // Validate string contains only whole numbers
-    if (accountString.matches("[0-9]+")) {
-      // convert string to integer
-      int accountNumber = Integer.parseInt(accountString);
-      // invoke findIndex()
-      return findIndex(accountList, accountNumber);
-    } else {
+    int accountNumber = 0;
+    try {
+      accountNumber = Integer.parseInt(accountString);
+    } catch (NumberFormatException ex) {
+      System.out.println(accountString + " is not a number");
       return -1;
     }
+    if (!(findIndex(accountList, accountNumber) == -1)) {
+      return findIndex(accountList, accountNumber);
+    } else {
+      System.out.println("Unknown account number");
+      return -1;
+    }
+    // Validate string contains only whole numbers
 	}
 	/*
 	 * This method takes acct (an Account object) and a Scanner that scans
@@ -228,27 +236,29 @@ public class Customer {
     // Create empty string for amount
     String amountString = "";
     // Create empty char for user selection
-    char letter;
+    String letter;
     // boolean loop continuation
     boolean loop = true;
-    // while loop to repeatedly ask th user until they they finish.
+    // while loop to repeatedly ask th user until they they finish
     while (loop) {
+      // case selections must be in string to exit with enter
       System.out.print("D)eposit, W)ithdraw, or F)inish? ");
-      letter = keyInput.next().charAt(0);
+      letter = keyInput.nextLine();
       switch (letter) {
-        case 'd':
-        case 'D':
+        case "d":
+        case "D":
           System.out.print("Enter amount to deposit: $");
-          amountString = keyInput.next();
+          amountString = keyInput.nextLine();
           doDeposit(account, amountString);
           break;
-        case 'w':
-        case 'W':
+        case "w":
+        case "W":
           System.out.print("Enter amount to withdraw: $");
+          amountString = keyInput.nextLine();
           doWithdrawal(account, amountString);
           break;
-        case 'f':
-        case 'F':
+        case "f":
+        case "F":
           System.out.println("Goodbye, " + account.getName() + ".");
           loop = false;
           break;
@@ -297,20 +307,26 @@ public class Customer {
     }
     // Invoke readAccounts to create account list from file.
     ArrayList<Account> accountList = readAccounts(fileInput);
-		// If the size of the list is greater than zero:    
+    // If the size of the list is greater than zero:
 		if (accountList.size() > 0) {
       // create scanner keyboard input object
       Scanner keyInput = new Scanner(System.in);
+      // save input as a string
+      String accountString = "0";
       // while input does not equal ENTER
-      while (keyInput.next() == "\n") {
+      while(true) {
         // prompt user to enter account number
         System.out.print("Enter your account number: ");
         // save input as a string
-        String accountString = keyInput.next();
+        accountString = keyInput.nextLine();
+        // Must Use nextLine to break loop with Enter key
+        if (accountString.equals("")) {
+          break;
+        }
         // pass input and string to get index
         int index = getAccountIndex(accountList, accountString);
         // invoke transations when index is not -1
-        if (index == -1) {
+        if (!(index == -1)) {
           // assign account object at index to a account variable
           Account account = accountList.get(index);
           // greet user
@@ -322,11 +338,10 @@ public class Customer {
           doTransactions(account, keyInput);
           // Invoke writeAccounts
           writeAccounts(accountList);
-          break;
         }
       }
-      keyInput.close();
+      System.out.println("ATM program concludes.");
+      System.exit(0);
     }
-
   }
 }
